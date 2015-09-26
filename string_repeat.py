@@ -4,7 +4,7 @@ Determines if a string has all unique letters.
 
 import unittest
 
-class Solution:
+class String_Repeat_Solution:
     
     def test_unique(self, s):
         ''' Uses a dictionary to test uniqueness
@@ -25,21 +25,21 @@ class Solution:
 class Unique_Characters_Test(unittest.TestCase):
 
     def test_negative(self):
-        s = Solution()
+        s = String_Repeat_Solution()
         input_s = "abc defghi jklmnop qrs tuvwxyz!"
         expected = False
         answer = s.test_unique(input_s)
         self.assertEqual(answer, expected)
         
     def test_negative_punc(self):
-        s = Solution()
+        s = String_Repeat_Solution()
         input_s = "abc defghi jklmnop qrs tuvwxyz!!!"
         expected = False
         answer = s.test_unique(input_s)
         self.assertEqual(answer, expected)
         
     def test_positive(self):
-        s = Solution()
+        s = String_Repeat_Solution()
         input_s = "fizzbuzz"
         expected = True
         answer = s.test_unique(input_s)
