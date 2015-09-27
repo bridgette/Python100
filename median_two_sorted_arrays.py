@@ -9,21 +9,46 @@ Find the median of two sorted arrays.
 import unittest
 
 class MedianSortedArraySolution(object):
-    def median(self, x):
+
+    def optimized_findMedianSortedArrays(self, nums1, nums2):
         '''
-        Returns median of a sorted list in O(1) time.
+        Optimized solution
+        If there are N elements in first array and M in the second array,
+        runtime is O(log(N + M))
+        
+        Uses binary search like algorithm to find the Nth smallest element
+        between two arrays.
         '''
-        if len(x) == 0:
-            return 0
-        elif len(x) % 2 != 0:
-            return x[len(x)/2]
+        l = len(nums1) + len(nums2)
+        if l % 2:
+            return self.findNthSmallest(nums1, nums2, l/2 + 1)
         else:
-            midavg = (x[len(x)/2] + x[len(x)/2-1])/2.0
-            return midavg   
-            
-    def findMedianSortedArrays(self, nums1, nums2):
+            return (self.findNthSmallest(nums1, nums2, l/2) +
+                    self.findNthSmallest(nums1, nums2, l/2 + 1))*0.5
+
+    def findNthSmallest(self, nums1, nums2, n):
+        if len(nums1) > len(nums2):
+            return self.findNthSmallest(nums2, nums1, n)
+        if not nums1:
+            return nums2[n-1]
+        if n == 1:
+            return min(nums1[0], nums2[0])
+
+        pa = min(n/2, len(nums1))
+        pb = n-pa
+
+        if nums1[pa-1] <= nums2[pb-1]:
+            return self.findNthSmallest(nums1[pa:], nums2, n-pa)
+        else:
+            return self.findNthSmallest(nums1, nums2[pb:], n-pb)
+           
+    
+    def naive_findMedianSortedArrays(self, nums1, nums2):
         """
         Naive solution:
+        Combine both lists into a sorted list, then find the median of the 
+        sorted list.
+        
         If there are N elements in the first array and M in the second array, 
         runtime is O(N + M).
         """
@@ -51,31 +76,67 @@ class MedianSortedArraySolution(object):
                 index_2 = index_2 + 1 
                             
         return self.median(in_order)
+        
+    def median(self, x):
+        '''
+        Returns median of a sorted list in O(1) time.
+        '''
+        if len(x) == 0:
+            return 0
+        elif len(x) % 2:
+            return x[len(x)/2]
+        else:
+            midavg = (x[len(x)/2] + x[len(x)/2-1])/2.0
+            return midavg   
 
 
 class MedianArrayTest(unittest.TestCase):
     
-    def test1(self):
+    def naive_test1(self):
         s = MedianSortedArraySolution()
-        answer = s.findMedianSortedArrays([1,3,7,34], [6,10,14,15,16,17])
+        answer = s.naive_findMedianSortedArrays([1,3,7,34], [6,10,14,15,16,17])
         expected = 12
         self.assertEqual(answer, expected)
     
-    def test2(self):
+    def naive_test2(self):
         s = MedianSortedArraySolution()
-        answer = s.findMedianSortedArrays([1,2,3,5,6,7], [4])
+        answer = s.naive_findMedianSortedArrays([1,2,3,5,6,7], [4])
         expected = 4
         self.assertEqual(answer, expected)
         
-    def test3(self):
+    def naive_test3(self):
         s = MedianSortedArraySolution()
-        answer = s.findMedianSortedArrays([1], [2,3])
+        answer = s.naive_findMedianSortedArrays([1], [2,3])
         expected = 2
         self.assertEqual(answer, expected)
         
-    def test_null_case(self):
+    def naive_test_null_case(self):
         s = MedianSortedArraySolution()
-        answer = s.findMedianSortedArrays([], [])
+        answer = s.naive_findMedianSortedArrays([], [])
+        expected = 0
+        self.assertEqual(answer, expected)
+     
+    def optimized_test1(self):
+        s = MedianSortedArraySolution()
+        answer = s.optimized_findMedianSortedArrays([1,3,7,34], [6,10,14,15,16,17])
+        expected = 12
+        self.assertEqual(answer, expected)
+    
+    def optimized_test2(self):
+        s = MedianSortedArraySolution()
+        answer = s.optimized_findMedianSortedArrays([1,2,3,5,6,7], [4])
+        expected = 4
+        self.assertEqual(answer, expected)
+        
+    def optimized_test3(self):
+        s = MedianSortedArraySolution()
+        answer = s.optimized_findMedianSortedArrays([1], [2,3])
+        expected = 2
+        self.assertEqual(answer, expected)
+        
+    def optimized_test_null_case(self):
+        s = MedianSortedArraySolution()
+        answer = s.optimized_findMedianSortedArrays([], [])
         expected = 0
         self.assertEqual(answer, expected)
         
