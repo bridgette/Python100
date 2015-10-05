@@ -19,7 +19,7 @@ class NearlyDupeSolution(object):
         :type t: int
         :rtype: bool
         """
-        return
+        return True
         
 class AlmostDupeTest(unittest.TestCase):
     
