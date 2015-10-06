@@ -21,14 +21,19 @@ class EightQueensSolution(object):
         and diagonals upon which we have seen Queens. Runs in O(n^2), where n
         is height/width of chessboard.
         '''
+        all_rows = board.split('\n')
+        # check basic board configuration 
+        if board.count("*") != 8:
+            return "invalid"
+        if len(all_rows) != 8:
+            return "invalid"
+            
         columns_seen = {}
         rows_seen = {}
         left_diag_seen = {}
         right_diag_seen = {}
         
-        all_rows = board.split('\n')
         for i, row in enumerate(all_rows):
-            print "I see a row ", row, "at i ", i, ""
             for j, square in enumerate(list(row)):
                 
                 if square == '*':
@@ -73,13 +78,37 @@ class EightQueensTest(unittest.TestCase):
 .*......\n\
 ...*....\n\
 .....*..\n\
-..*.....")
+..*....")
         expected = "valid"
         self.assertEqual(answer, expected)
         
+    def moreThanEightQueensTest(self):
+        s = EightQueensSolution()
+        answer = s.eightQueens("*.......\n\
+.*....*.\n\
+....*...\n\
+.......*\n\
+.*......\n\
+...*....\n\
+.....*..\n\
+..*....")
+        expected = "invalid"
+        self.assertEqual(answer, expected)
+        
+    def moreThanEightRowsTest(self):
+        s = EightQueensSolution()
+        answer = s.eightQueens("*.......\n\
+......*.\n\
+....*...\n\
+.......*\n\
+.*......\n\
+...*....\n\
+.....*..\n\
+..*....\n\
+........")
+        expected = "invalid"
+        self.assertEqual(answer, expected)
         
 if __name__ == '__main__':
     unittest.main()
-    # lines = [line.rstrip('\n') for line in open('filename')]
-
         
