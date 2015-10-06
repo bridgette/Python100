@@ -23,7 +23,6 @@ class MixedFractionsSolution(object):
             followed by a proper fraction
         '''
         numerator, denominator = fractionAsString.split(" ")
-        print numerator, denominator
         
         numerator = int(numerator)
         denominator = int(denominator)
