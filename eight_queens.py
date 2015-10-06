@@ -111,4 +111,10 @@ class EightQueensTest(unittest.TestCase):
         
 if __name__ == '__main__':
     unittest.main()
+<<<<<<< HEAD:eightQueens.py
         
+=======
+    # lines = [line.rstrip('\n') for line in open('filename')]
+
+        
+>>>>>>> origin/master:eight_queens.py
