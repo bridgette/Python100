@@ -22,22 +22,22 @@ class LinkedListSolution(object):
         '''
         prints a singly-linked list, if given the head node
         '''   
-        data = []
-        while head and head.data:
-            data.append(str(head.data))
-            head = head.next
-        return string.join(data, "\n")
+        if head == None:
+            return
+        else:
+            print head.data
+            self.PrintLinkedList(head.next)
         
     def ReversePrint(self, head):
         '''
         prints a singly-linked list in reverse order, if given the head node
         '''
-        data = []
-        while head and head.data:
-            data.append(str(head.data))
-            head = head.next
-        data.reverse()
-        return string.join(data, "\n")
+        if head == None:
+            return
+    
+        else:
+            self.ReversePrint(head.next)
+            print head.data
         
     def InsertTail(self, head, data):
         '''
@@ -127,57 +127,25 @@ class LinkedListTest(unittest.TestCase):
         self.empty_list = None
         self.empty_node = Node()
         self.long_list = Node(1, Node(2, Node(6, Node(9, Node(4, Node(7))))))
-        
-    def test_print(self):
-        s = LinkedListSolution()
-        answer_123 = s.PrintLinkedList(self.one_two_three)
-        expected_123 = "1\n2\n3"
-        self.assertEqual(answer_123, expected_123)
-        
-        answer_empty = s.PrintLinkedList(self.empty_list)
-        expected_empty = ""
-        self.assertEqual(answer_empty, expected_empty)
-        
-        answer_123 = s.PrintLinkedList(self.long_list)
-        expected_123 = "1\n2\n6\n9\n4\n7"
-        self.assertEqual(answer_123, expected_123)
-        
-    def test_print_reverse(self):
-        s = LinkedListSolution()
-        answer_123 = s.ReversePrint(self.one_two_three)
-        expected_123 = "3\n2\n1"
-        self.assertEqual(answer_123, expected_123)
-        
-        answer_empty = s.ReversePrint(self.empty_list)
-        expected_empty = ""
-        self.assertEqual(answer_empty, expected_empty)
-        
-        answer_long = s.ReversePrint(self.long_list)
-        expected_long = "7\n4\n9\n6\n2\n1"
-        self.assertEqual(answer_long, expected_long)
-        
+                
     def test_insert_tail(self):
         s = LinkedListSolution()
 
         answer = s.InsertTail(self.one_two_three, 4)
         answer = s.PrintLinkedList(answer)
-        expected = "1\n2\n3\n4"
-        self.assertEqual(answer, expected)
+        self.assertEqual(answer, "1\n2\n3\n4")
         
         answer = s.InsertTail(self.empty_list, 1)
         answer = s.PrintLinkedList(answer)
-        expected = "1"
-        self.assertEqual(answer, expected)
+        self.assertEqual(answer, "1")
         
         answer = s.InsertTail(self.empty_node, 1)
         answer = s.PrintLinkedList(answer)
-        expected = "1"
-        self.assertEqual(answer, expected)
+        self.assertEqual(answer, "1")
 
         answer = s.InsertTail(self.long_list, 42)
         answer = s.PrintLinkedList(answer)
-        expected = "1\n2\n6\n9\n4\n7\n42"
-        self.assertEqual(answer, expected)
+        self.assertEqual(answer, "1\n2\n6\n9\n4\n7\n42")
         
     def test_insert_head(self):
         s = LinkedListSolution()
