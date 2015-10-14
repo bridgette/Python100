@@ -33,10 +33,9 @@ class PrincessSolution():
         n: number of rows and columns in the square grid
         grid: string representing the contents of every square in the grid       
         '''
-        matrix, hero, princess = self.ConvertGridToMatrix(3, grid)
-        
+        hero, princess = self.GetHeroPrincessPosition(grid)        
         q = Queue.Queue()
-        valid_path = self.BFS(matrix, hero, princess, q)
+        valid_path = self.BFS(grid, hero, princess, q)
         
         directions = []
         
@@ -46,35 +45,24 @@ class PrincessSolution():
             d = self.ShoutDirections(prev_step, curr_step)
             directions.append(d)
             
-        return directions.join(" ")
-    
-    def ConvertGridToMatrix(self, n, grid):
+        return "\n".join(directions)
+        
+    def GetHeroPrincessPosition(self, grid):
         '''
-        grid: grid, represented by a string
-        n: numberof rows and columns in a square grid
-
-        returns a tuple with:        
-            - the grid as a more usable matrix
-            - the (x,y) position of the hero
-            - the (x,y) position of the princess
+        scans around to find the positions of the hero and the princess in
+        the grid.
+        returns a tuple with hero and princess' positions.
         '''
-        matrix = [[0 for r in range(n)] for c in range(n)]
         hero_pos = ()
         princess_pos = ()
-        
-        string_position = 0
-        for r in range(n):
-            for c in range(n):
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
 
-                if grid[string_position] == 'm':
+                if grid[r][c] == 'm':
                     hero_pos = (r,c)
-                elif grid[string_position] == 'p':
+                elif grid[r][c] == 'p':
                     princess_pos = (r,c)
-                    
-                matrix[r][c] = grid[string_position]
-                string_position += 1
-                
-        return (matrix, hero_pos, princess_pos)
+        return (hero_pos, princess_pos)
         
     def BFS(self, graph, start, end, q):
         '''
@@ -137,44 +125,69 @@ class PrincessSolution():
         curr_x, curr_y= current
         next_x, next_y = nex
         if (curr_x > next_x):
-            return "DOWN"
-        elif (curr_x < next_x):
             return "UP"
+        elif (curr_x < next_x):
+            return "DOWN"
         elif (curr_y < next_y):
-            return "LEFT"
-        elif (curr_y > next_y):
             return "RIGHT"
+        elif (curr_y > next_y):
+            return "LEFT"
         
 
-class MagicalStringTest(unittest.TestCase):
+class PrincessTest(unittest.TestCase):
     
+    def ConvertGridToMatrix(self, n, grid):
+        '''
+        Converts a string into an array of characters of size n x n.
+        Used for testing.
+        
+        grid: grid, represented by a string
+        n: numberof rows and columns in a square grid
+
+        returns a tuple with:        
+            - the grid as a more usable matrix
+        '''
+        matrix = [[0 for r in range(n)] for c in range(n)]
+        
+        string_position = 0
+        for r in range(n):
+            for c in range(n):                    
+                matrix[r][c] = grid[string_position]
+                string_position += 1
+                
+        return matrix 
+        
     def setUp(self):
         self.s = PrincessSolution()
-        self.threeXthree = "p---m-----"
-        self.fourXfour = "p---------m-----"
+        self.three_matrix = self.ConvertGridToMatrix(3, "p---m-----")
+        self.three_matrix2 = self.ConvertGridToMatrix(3, "----m---p")
+        self.four_matrix = self.ConvertGridToMatrix(4, "p---------m-----")
         
-    def test_hero_moves(self):
-        matrix, _, _ = self.s.ConvertGridToMatrix(3, self.threeXthree)
-        
-        answer = self.s.GetHeroMoves(matrix, (0,0))
+    def test_hero_moves(self):        
+        answer = self.s.GetHeroMoves(self.three_matrix, (0,0))
         expected = [(0,1), (1,0)]
         self.assertEqual(answer, expected)
         
-        answer = self.s.GetHeroMoves(matrix, (1,1))
+        answer = self.s.GetHeroMoves(self.three_matrix, (1,1))
         expected = [(0,1), \
                     (1,0), (1,2), \
                     (2,1)]
         self.assertEqual(answer, expected)
         
-        answer = self.s.GetHeroMoves(matrix, (2,2))
+        answer = self.s.GetHeroMoves(self.three_matrix, (2,2))
         expected = [(1,2), (2,1), (2,3)]
         self.assertEqual(answer, expected) 
         
-    def integrated_test(self):
-        answer = self.s.displayPathtoPrincess(3, self.threeXthree)
-        expected0 = "UP LEFT"
-        expected1 = "LEFT UP"
-        self.assertEqual(answer, expected0) or self.assertEqual(answer, expected1)
+    def test_integrated(self):
+        answer = self.s.displayPathtoPrincess(3, self.three_matrix)
+        expected0 = "UP\nLEFT"
+        expected1 = "LEFT\nUP"
+        self.assert_((answer == expected0) or (answer == expected1))
+        
+        answer = self.s.displayPathtoPrincess(3, self.three_matrix2)
+        expected0 = "DOWN\nRIGHT"
+        expected1 = "RIGHT\nDOWN"
+        self.assert_((answer == expected0) or (answer == expected1))
         
 
 
