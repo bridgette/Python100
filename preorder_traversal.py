@@ -39,56 +39,25 @@ class Tree:
     def __init__(self):
         self.root = None
 
-    def getRoot(self):
-        return self.root
-
     def add(self, val):
-        if(self.root == None):
+        if (self.root == None):
             self.root = Node(val)
         else:
             self._add(val, self.root)
 
     def _add(self, val, node):
-        if(val < node.v):
-            if(node.l != None):
+        if (val < node.v):
+            if (node.r != None):
+                raise AssertionError("Out of preorder!")
+            elif (node.l != None):
                 self._add(val, node.l)
             else:
                 node.l = Node(val)
         else:
-            if(node.r != None):
+            if (node.r != None):
                 self._add(val, node.r)
             else:
                 node.r = Node(val)
-
-    def find(self, val):
-        if(self.root != None):
-            return self._find(val, self.root)
-        else:
-            return None
-
-    def _find(self, val, node):
-        if(val == node.v):
-            return node
-        elif(val < node.v and node.l != None):
-            self._find(val, node.l)
-        elif(val > node.v and node.r != None):
-            self._find(val, node.r)
-
-    def preOrderTree(self):
-        '''
-        Uses tail recursion to get the preordered list of the binary tree.
-        '''
-        if(self.root != None):
-            return self._preOrderTree(self.root, [])
-
-    def _preOrderTree(self, node, preordered_list):
-        if(node == None):
-            return preordered_list
-        preordered_list.append(node.v)
-        preordered_list = self._preOrderTree(node.l, preordered_list)
-        preordered_list = self._preOrderTree(node.r, preordered_list)
-        return preordered_list
-
       
 class PreorderTraversalSolution():
           
@@ -106,13 +75,14 @@ class PreorderTraversalSolution():
         if len(l) > len(set(l)): return "no"
         
         tree = Tree()
+        
         for each_l in l:
-            tree.add(each_l)
-        preordered_list = tree.preOrderTree()
-        if preordered_list == l:
-            return "yes"
-        else:
-            return "no"
+            try:
+                tree.add(each_l)
+            except AssertionError:
+                return "no"
+
+        return "yes"
    
 
 class PreorderTraversalTester(unittest.TestCase):
