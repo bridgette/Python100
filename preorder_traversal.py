@@ -46,18 +46,23 @@ class Tree:
             self._add(val, self.root)
 
     def _add(self, val, node):
-        if (val < node.v):
+        
+        if (val < node.v):                # insert on the left
             if (node.r != None):
                 raise AssertionError("Out of preorder!")
             elif (node.l != None):
                 self._add(val, node.l)
             else:
                 node.l = Node(val)
-        else:
+                
+        elif (val > node.v):              # insert on the right
             if (node.r != None):
                 self._add(val, node.r)
             else:
                 node.r = Node(val)
+                
+        else:                             # val == node.v
+            raise AssertionError("Cannot insert duplicate elements!")
       
 class PreorderTraversalSolution():
           
@@ -71,9 +76,7 @@ class PreorderTraversalSolution():
         O(n). Total runtime is then O(n^2).
         
         output: "yes" or "no"
-        '''
-        if len(l) > len(set(l)): return "no"
-        
+        '''        
         tree = Tree()
         
         for each_l in l:
@@ -124,6 +127,15 @@ class PreorderTraversalTester(unittest.TestCase):
         answer = self.s.CheckPreorder([50, 30, 20, 10, 25, 40, 45, 70, 90, 80])
         expected = "yes"
         self.assertEqual(answer, expected) 
+        
+    def test_null(self):
+        answer = self.s.CheckPreorder([])
+        expected = "yes"
+        self.assertEqual(answer, expected)  
+        
+        answer = self.s.CheckPreorder([-1765432])
+        expected = "yes"
+        self.assertEqual(answer, expected)     
 
 
 
