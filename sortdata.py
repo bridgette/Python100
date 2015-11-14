@@ -21,6 +21,8 @@ appeared first in the input]
 """
 import unittest
 import string 
+import sys
+from StringIO import StringIO
 
 class SortDataSolution(object):
 
@@ -61,20 +63,25 @@ class SortDataTest(unittest.TestCase):
                     
         self.assertEqual(answer, expected)  
         
-    def test_prettyprint(self):     
+    def test_prettyprint(self): 
+        capture = StringIO()
+        save_stdout = sys.stdout
+        sys.stdout = capture
+
         table = self.s.sortTable([[10, 2, 5], \
                                    [7, 1, 0],  \
                                    [9, 9, 9],  \
                                    [1, 23, 12],\
                                    [6, 5, 9]], 1)
-        answer = s.prettyPrintTable(table)                      
-        expected = [[7, 1, 0], \
-                    [10, 2, 5],\
-                    [6, 5, 9], \
-                    [9, 9, 9], \
-                    [1, 23, 12]]
-                    
-        self.assertEqual(answer, expected)  
+        self.s.prettyPrintTable(table)                      
+        expected = "7 1 0\n\
+10 2 5\n\
+6 5 9\n\
+9 9 9\n\
+1 23 12\n"
+        sys.stdout = save_stdout
+        answer = capture.getvalue()
+        self.assertEqual(answer, expected) 
 
 if __name__ == '__main__':
     unittest.main()
