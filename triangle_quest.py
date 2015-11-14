@@ -55,7 +55,7 @@ class TriangleQuestSolution(object):
         for e in range(1, k): 
             print (10 **e - 1) / 9 * e
         
-class SortDataTest(unittest.TestCase):
+class TriangleQuestTest(unittest.TestCase):
         
     def setUp(self):
         self.s = TriangleQuestSolution() 
