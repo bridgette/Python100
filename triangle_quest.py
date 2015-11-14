@@ -32,7 +32,7 @@ class TriangleQuestSolution(object):
     def printTriangle(self, k):
         '''
         prints a triangle, specified above, with height k.
-        Does not use strings, uses a single for loop and print statment.
+        Does not use strings, uses two for loops.
         '''
         for i in range(1, k):
             print i * self.buildIntFromList([1] * i)
@@ -45,6 +45,16 @@ class TriangleQuestSolution(object):
         '''
         return sum([digit * 10 ** (len(nums) - 1 - n) for n, digit in enumerate(nums)])
        
+    def printTriangleVariant(self, k):
+        '''
+        Calculates each row with repunits.
+        
+        For more information, see:
+        https://en.wikipedia.org/wiki/Repunit
+        '''
+        for e in range(1, k): 
+            print (10 **e - 1) / 9 * e
+        
 class SortDataTest(unittest.TestCase):
         
     def setUp(self):
@@ -56,6 +66,20 @@ class SortDataTest(unittest.TestCase):
         sys.stdout = capture
 
         self.s.printTriangle(5)
+        expected = "1\n\
+22\n\
+333\n\
+4444\n"
+        sys.stdout = save_stdout
+        answer = capture.getvalue()
+        self.assertEqual(answer, expected) 
+        
+    def test_triangle_variant(self): 
+        capture = StringIO()
+        save_stdout = sys.stdout
+        sys.stdout = capture
+
+        self.s.printTriangleVariant(5)
         expected = "1\n\
 22\n\
 333\n\
