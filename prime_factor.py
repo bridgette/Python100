@@ -26,7 +26,8 @@ class PrimeFactorSolution(object):
         candidates = [1] * (n + 1)
         
         # 0 and 1 are not primes
-        candidates[0] = 0
+        if n > -1:
+            candidates[0] = 0
         if n > 0:
             candidates[1] = 0 
         
@@ -61,6 +62,15 @@ class PrimeTest(unittest.TestCase):
     def setUp(self):
         self.s = PrimeFactorSolution()
  
+    def test_negatives(self):
+       answer = self.s.FindLargestFactor(-13)
+       expected = -13
+       self.assertEqual(answer, expected) 
+       
+       answer = self.s.FindLargestFactor(-8)
+       expected = -8
+       self.assertEqual(answer, expected)
+        
     def test_one(self):
         answer = self.s.FindLargestFactor(1)
         expected = 1
@@ -88,10 +98,6 @@ class PrimeTest(unittest.TestCase):
         answer = self.s.FindLargestFactor(13195)
         expected = 29
         self.assertEqual(answer, expected) 
-    
-
-        
-
         
 if __name__ == '__main__':
     unittest.main()
